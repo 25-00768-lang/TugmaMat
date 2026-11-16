@@ -21,19 +21,19 @@ What makes TugmaMat different is its compatibility matching system, which recomm
 
 # FEATURES
 
-User Account and Role Management – enables users to create accounts, access platforms, and use system functions depending on their roles whether they are providers, requesters, or administrators. 
-Construction Material Listing – allows material providers to upload details and pictures of their surplus construction supplies by providing information such as measurements, and physical conditions. 
-Material Request Management – enables users to request for the construction materials by indicating their type, size, quantity, and their desired condition.
-Compatibility Matching System – automatically checks available construction material and matches the suitable material by evaluating their specifications with the users requirements.
-Compatibility Score and Explanation – displays a compatibility rating that shows how close each available material matches the user request by showing a percentage score. Provides detailed information of the specific requirements filled or unmet by each recommended material listing.
-Alternative Material Suggestions – suggests alternative available materials that closely match to the user's requested item when the exact item is unavailable.
-Material Availability Tracking – maintain accurate status of listed materials by tracking their availability whenever they are reserved, available, or no longer available.
-Search and Advanced Filtering – allows users to find materials by category, dimensions, condition, quantity, location, and availability.
-Provider and Requester Communication – allows users to send inquiries and coordinate the collection or transfer of reusable materials.
-Material Reuse Dashboard – displays statistics such as available listings, active requests, successful matches, and completed material transfers.
-Material Reuse History and Reports – stores records of the finalized transactions and produces summary reports that shows the kinds and amounts of materials that have been reused.
-Listing Verification and Reporting – allows administrators to manage reported materials listings, handle unsuitable posts, and supervise overall platform operations.
-Notification System Sends – notifications to users about material matches, new messages, changes in request statuses, and changes in material availability. 
+- User Account and Role Management – enables users to create accounts, access platforms, and use system functions depending on their roles whether they are providers, requesters, or administrators. 
+- Construction Material Listing – allows material providers to upload details and pictures of their surplus construction supplies by providing information such as measurements, and physical conditions. 
+- Material Request Management – enables users to request for the construction materials by indicating their type, size, quantity, and their desired condition.
+- Compatibility Matching System – automatically checks available construction material and matches the suitable material by evaluating their specifications with the users requirements.
+- Compatibility Score and Explanation – displays a compatibility rating that shows how close each available material matches the user request by showing a percentage score. Provides detailed information of the specific requirements filled or unmet by each recommended material listing.
+- Alternative Material Suggestions – suggests alternative available materials that closely match to the user's requested item when the exact item is unavailable.
+- Material Availability Tracking – maintain accurate status of listed materials by tracking their availability whenever they are reserved, available, or no longer available.
+- Search and Advanced Filtering – allows users to find materials by category, dimensions, condition, quantity, location, and availability.
+- Provider and Requester Communication – allows users to send inquiries and coordinate the collection or transfer of reusable materials.
+- Material Reuse Dashboard – displays statistics such as available listings, active requests, successful matches, and completed material transfers.
+- Material Reuse History and Reports – stores records of the finalized transactions and produces summary reports that shows the kinds and amounts of materials that have been reused.
+- Listing Verification and Reporting – allows administrators to manage reported materials listings, handle unsuitable posts, and supervise overall platform operations.
+- Notification System Sends – notifications to users about material matches, new messages, changes in request statuses, and changes in material availability. 
 
 
 
