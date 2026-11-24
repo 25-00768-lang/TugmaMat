@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Admin')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+<main>
+  <h1>Manage listings</h1>
+  <p class="muted">Reported listings appear at the top.</p>
+  <table class="table">
+    <thead><tr><th>Material</th><th>Provider</th><th>Status</th><th>Report</th><th></th></tr></thead>
+    <tbody>
+      <tr th:each="m : ${all}">
+        <td><a th:href="@{/listings/{id}(id=${m.id})}" th:text="${m.name}">Name</a></td>
+        <td th:text="${m.owner.fullName}">Provider</td>
+        <td><span th:class="'badge s-' + ${#strings.toLowerCase(m.status.name())}" th:text="${m.status.label}">Available</span></td>
+        <td><span class="badge s-reported" th:if="${m.reported}">Reported</span></td>
+        <td class="right">
+          <form class="inline" method="post" th:if="${m.reported}" th:action="@{/admin/listings/{id}/dismiss(id=${m.id})}">
+            <button class="link" type="submit">No problem</button>
+          </form>
+          <form class="inline" method="post" th:if="${m.status.name() != 'REMOVED'}" th:action="@{/admin/listings/{id}/remove(id=${m.id})}">
+            <button class="link danger" type="submit">Remove listing</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>
