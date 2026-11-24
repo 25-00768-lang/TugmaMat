@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Messages')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+<main class="narrow">
+  <h1>Messages</h1>
+  <p class="empty" th:if="${#lists.isEmpty(msgs)}">You have no messages yet. Ask a provider a question from a material's page.</p>
+  <article class="card msg" th:each="msg : ${msgs}" th:with="other=${msg.sender.id == me.id ? msg.recipient : msg.sender}">
+    <p class="muted">
+      <span th:text="${msg.sender.id == me.id ? 'You to ' + msg.recipient.fullName : msg.sender.fullName + ' to you'}">Who</span>
+      about <a th:href="@{/listings/{id}(id=${msg.listing.id})}" th:text="${msg.listing.name}">Material</a>,
+      <span th:text="${#temporals.format(msg.createdAt, 'dd MMM yyyy HH:mm')}">date</span>
+    </p>
+    <p th:text="${msg.content}">Content</p>
+    <form method="post" th:action="@{/messages/send}" class="reply">
+      <input type="hidden" name="listingId" th:value="${msg.listing.id}">
+      <input type="hidden" name="recipientId" th:value="${other.id}">
+      <input name="content" required th:placeholder="'Reply to ' + ${other.fullName}">
+      <button class="btn small" type="submit">Send</button>
+    </form>
+  </article>
+</main>
+</body>
+</html>

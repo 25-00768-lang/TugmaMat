@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} + ' | TugmaMat'">TugmaMat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer th:src="@{/js/anim.js}"></script>
+</head>
+<body>
+<header class="nav" th:fragment="nav">
+  <a class="brand" th:href="@{/}">TugmaMat</a>
+  <nav>
+    <a th:href="@{/listings}">Materials</a>
+    <a th:if="${me != null and me.role.name() == 'PROVIDER'}" th:href="@{/listings/new}">Post</a>
+    <a th:if="${me != null and me.role.name() == 'REQUESTER'}" th:href="@{/requests/new}">Find</a>
+    <a th:if="${me != null and me.role.name() != 'REQUESTER'}" th:href="@{/claims}">Pickups</a>
+    <a th:if="${me != null}" th:href="@{/messages}">Messages</a>
+    <a th:if="${me != null}" th:href="@{/history}">History</a>
+    <a th:if="${me != null and me.role.name() == 'ADMIN'}" th:href="@{/admin}">Admin</a>
+    <a th:if="${me != null}" th:href="@{/dashboard}">Dashboard</a>
+  </nav>
+  <div class="who">
+    <span th:if="${me != null}" th:text="${me.fullName}">Name</span>
+    <a th:if="${me != null}" class="btn small ghost" th:href="@{/logout}">Log out</a>
+    <a th:if="${me == null}" class="btn small ghost" th:href="@{/login}">Log in</a>
+    <a th:if="${me == null}" class="btn small" th:href="@{/register}">Sign up</a>
+  </div>
+</header>
+</body>
+</html>

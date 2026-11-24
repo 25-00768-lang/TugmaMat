@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('History and reports')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+<main>
+  <h1>Material reuse history</h1>
+  <section class="statrow">
+    <dl><dt>Transfers</dt><dd th:text="${#lists.size(done)}">0</dd></dl>
+    <dl><dt>Total pieces/units reused</dt><dd th:text="${totalItems}">0</dd></dl>
+  </section>
+
+  <h2>By category</h2>
+  <p class="empty" th:if="${#maps.isEmpty(byCategory)}">No completed transfers yet. Pieces appear here once a requester takes them or a provider marks a listing &ldquo;Given away&rdquo;.</p>
+  <table class="table" th:unless="${#maps.isEmpty(byCategory)}">
+    <thead><tr><th>Category</th><th>Quantity</th></tr></thead>
+    <tbody><tr th:each="e : ${byCategory}"><td th:text="${e.key.label}">Category</td><td th:text="${e.value}">0</td></tr></tbody>
+  </table>
+
+  <h2 th:unless="${#lists.isEmpty(done)}">Transfers</h2>
+  <table class="table" th:unless="${#lists.isEmpty(done)}">
+    <thead><tr><th>Material</th><th>Provider</th><th>Taken by</th><th>Quantity</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr th:each="r : ${done}">
+        <td><a th:href="@{/listings/{id}(id=${r.material().id})}" th:text="${r.material().name}">Name</a></td>
+        <td th:text="${r.material().owner.fullName}">Provider</td>
+        <td th:text="${r.taker() != null ? r.taker() : '-'}">Requester</td>
+        <td th:text="${r.qty() + ' ' + r.material().unit}">1 pcs</td>
+        <td th:text="${#temporals.format(r.when(), 'dd MMM yyyy')}">Date</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Materials')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+<main>
+  <h1>Available materials</h1>
+  <form class="filters" method="get" th:action="@{/listings}">
+    <label class="field">Search<input name="q" th:value="${q}" placeholder="e.g. plywood, 2x4"></label>
+    <label class="field">Category
+      <select name="category">
+        <option value="">All</option>
+        <option th:each="c : ${categories}" th:value="${c}" th:text="${c.label}" th:selected="${selCategory == c}"></option>
+      </select>
+    </label>
+    <label class="field">Condition
+      <select name="condition">
+        <option value="">Any</option>
+        <option th:each="c : ${conditions}" th:value="${c}" th:text="${c.label}" th:selected="${selCondition == c}"></option>
+      </select>
+    </label>
+    <label class="field">Location
+      <select name="location">
+        <option value="">All of Batangas</option>
+        <option th:each="l : ${locations}" th:if="${l != 'Entire Batangas'}" th:value="${l}" th:text="${l}" th:selected="${l == location}"></option>
+      </select>
+    </label>
+    <label class="field">Minimum quantity<input type="number" min="1" name="minQty" th:value="${minQty}"></label>
+    <label class="field">Minimum length (cm)<input type="number" min="0" step="any" name="minLength" th:value="${minLength}"></label>
+    <button class="btn" type="submit">Filter</button>
+  </form>
+
+  <p class="empty" th:if="${#lists.isEmpty(list)}">No materials found. Try removing some filters.</p>
+  <div class="grid">
+    <a class="card item" th:each="m : ${list}" th:href="@{/listings/{id}(id=${m.id})}">
+      <div class="thumb">
+        <img th:if="${m.imageUrl != null}" th:src="@{${m.imageUrl}}" alt="">
+        <div class="noimg" th:unless="${m.imageUrl != null}">No photo</div>
+      </div>
+      <h3 th:text="${m.name}">Name</h3>
+      <p class="muted" th:text="${m.category.label}">Category</p>
+      <p><span th:text="${m.quantity + ' ' + m.unit}">3 pcs</span>, <span th:text="${m.matCondition.label}">Good</span></p>
+      <p class="muted" th:text="${m.size}">244 × 5 cm</p>
+      <p class="muted" th:text="${m.location}">Location</p>
+    </a>
+  </div>
+</main>
+</body>
+</html>

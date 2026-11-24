@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Dashboard')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+<main>
+  <h1>Hello, <span th:text="${me.fullName}">User</span></h1>
+  <p class="muted" th:text="${me.role.label}">Role</p>
+
+  <section class="statrow">
+    <dl><dt>Available listings</dt><dd th:text="${availableCount}">0</dd></dl>
+    <dl><dt>Reserved</dt><dd th:text="${reservedCount}">0</dd></dl>
+    <dl><dt>Active requests</dt><dd th:text="${activeRequests}">0</dd></dl>
+    <dl><dt>Given away (transfers)</dt><dd th:text="${completedCount}">0</dd></dl>
+  </section>
+
+  <section th:if="${myListings != null}">
+    <div class="rowhead"><h2>My listings</h2><a class="btn small" th:href="@{/listings/new}">Post a material</a></div>
+    <p class="empty" th:if="${#lists.isEmpty(myListings)}">You haven't posted anything yet. Post your leftover materials so people looking for them can find you.</p>
+    <table class="table" th:unless="${#lists.isEmpty(myListings)}">
+      <thead><tr><th>Material</th><th>Quantity</th><th>Condition</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="m : ${myListings}">
+          <td><a th:href="@{/listings/{id}(id=${m.id})}" th:text="${m.name}">Name</a></td>
+          <td th:text="${m.quantity + ' ' + m.unit}">1 pcs</td>
+          <td th:text="${m.matCondition.label}">Good</td>
+          <td><span th:class="'badge s-' + ${#strings.toLowerCase(m.status.name())}" th:text="${m.status.label}">Available</span></td>
+          <td class="right"><a th:href="@{/listings/{id}/edit(id=${m.id})}">Edit</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section th:if="${myRequests != null}">
+    <div class="rowhead"><h2>My requests</h2><a class="btn small" th:href="@{/requests/new}">Find materials</a></div>
+    <p class="empty" th:if="${#lists.isEmpty(myRequests)}">You have no requests yet. Tell us what you need and we'll look for a match.</p>
+    <table class="table" th:unless="${#lists.isEmpty(myRequests)}">
+      <thead><tr><th>Looking for</th><th>Quantity</th><th>Top score</th><th>Matches</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="r : ${myRequests}">
+          <td th:text="${r.name}">Name</td>
+          <td th:text="${r.quantity}">1</td>
+          <td th:text="${r.fulfilled ? 'Fulfilled' : best[r.id] + '%'}">0%</td>
+          <td th:text="${counts[r.id]}">0</td>
+          <td class="right">
+            <a th:href="@{/requests/{id}/matches(id=${r.id})}">View matches</a>
+            <form th:if="${!r.fulfilled}" class="inline" method="post" th:action="@{/requests/{id}/fulfill(id=${r.id})}">
+              <button class="link" type="submit">Mark fulfilled</button>
+            </form>
+            <form class="inline" method="post" th:action="@{/requests/{id}/delete(id=${r.id})}" onsubmit="return confirm('Delete this request?')">
+              <button class="link danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section th:if="${me.role.name() == 'ADMIN'}">
+    <p><a class="btn" th:href="@{/admin}">Open admin panel</a></p>
+  </section>
+</main>
+</body>
+</html>

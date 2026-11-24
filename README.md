@@ -1,39 +1,65 @@
-# TugmaMat: Tamang Materyales, Bagong Pakinabang. 
-A Web-Based Construction Material Reuse and Compatibility Matching System
+# TugmaMat
 
-TugmaMat is a web-based platform that connects people with unused construction materials to those who need them through a compatibility matching system. It helps reduce construction waste, lower expenses, and promote the reuse of available materials.
+Web-based construction material reuse and compatibility matching system.
+Java 17 + Spring Boot 3 + Thymeleaf + Spring Data JPA + H2 (file database).
 
-# PROBLEM
+## How to run
+1. Install JDK 17 (or newer) and Maven.
+2. Inside this folder: `mvn spring-boot:run`
+3. Open http://localhost:8080
 
-     Construction and renovation projects often leave behind excess materials that are still in good condition and could be useful for other projects. Unfortunately, many of these materials are eventually stored for long periods or thrown away because their owners have no convenient way of finding people who might need them. Meanwhile, individuals and small construction businesses continue to spend money buying new materials, even when suitable reusable materials may already be available elsewhere.
+(In IntelliJ / Eclipse / VS Code: open the folder as a Maven project and run `TugmaMatApplication`.)
 
-This situation creates a gap between people who have extra construction materials and those who need them. Without an organized way to share information about available materials, finding the right resources becomes difficult, especially when specific dimensions, quantities, and material conditions are required. As a result, usable resources go to waste, construction expenses increase, and opportunities to reuse materials are overlooked.
+## Demo accounts
+| Role      | Name      | Email                     | Password     |
+|-----------|-----------|---------------------------|--------------|
+| Provider  | Provider  | provider@tugmamat.ph      | provider123  |
+| Requester | Requester | requester@tugmamat.ph     | requester123 |
+| Admin     | Admin     | admin@tugmamat.ph         | admin123     |
 
+The database lives in `./data/` and uploaded images live in `./uploads/`.
+To reset everything, delete those two folders. (If you keep an older `./data`, the former
+demo users "Mang Roy" and "Aling Nena" are renamed to "Provider" and "Requester" on startup.)
 
+## Structure
+- `model/`    entities (User, Material, MaterialRequest, Message) and enums
+- `repo/`     Spring Data repositories
+- `service/`  `MatchingService`, the compatibility score and explanation
+- `web/`      controller, login filter, demo data
+- `resources/templates/`  Thymeleaf pages
+- `resources/static/css/` styling and animations
+- `resources/static/js/`  `anim.js`, scroll-reveal and counting numbers
 
-# SOLUTION
+## How the compatibility score is calculated (100 points)
+| Criteria      | Points | How |
+|---------------|--------|-----|
+| Category      | 20     | Same = 20, different = 0 |
+| Name / type   | 20     | Share of requested words found in the name or description |
+| Size          | 20     | Length and width: listing / requested (capped at 100%) |
+| Quantity      | 20     | available / needed (capped at 100%) |
+| Condition     | 10     | Meets the requirement = 10, each step lower = -4 |
+| Location      | 10     | Same or overlapping location = 10; "Entire Batangas" matches any place in Batangas |
 
-   TugmaMat proposes a web-based platform that connects individuals and construction businesses who have unused materials with those looking for affordable and suitable alternatives. Users can post available materials with details such as material type, dimensions, quantity, and condition. Those who need materials can also submit requests based on their specific project requirements, allowing both providers and potential users to find each other more easily.
+70% and up: close match. 40% to 69%: alternative. Below 40%: not shown.
+Everything lives in `MatchingService.java`, so the weights are easy to change.
 
-What makes TugmaMat different is its compatibility matching system, which recommends available materials based on how closely they meet the user's requirements. Instead of manually searching through unrelated listings, users can receive suggestions for materials that may fit their needs. The platform will also include dashboards and reports to monitor listings, requests, and successful matches. Through this system, materials that might otherwise be discarded can find new uses, helping reduce construction waste, lessen expenses, and encourage more responsible resource utilization.
+## Features
+- Register / log in as Provider, Requester or Admin
+- Post and edit listings, upload photos (demo data already has photos)
+- Request materials, delete requests, see compatibility scores and alternatives
+- Availability tracking (Available / Reserved / Given away), messages to the provider, history and reports
+- Taking materials works like a Shopee order: the requester picks a quantity and takes it (no code). Only the provider/admin has the Pickups page, where they mark pieces as picked up or cancel
+- Admin panel for reported listings
+- Animations on every box: staggered scroll-reveal, hover lift, counting numbers, drawing icons,
+  filling score tape, sliding table rows, neumorphic buttons (`style.css`, `anim.js`).
+  Respects the OS "reduce motion" setting.
 
+## Tests
+`mvn test` runs `MatchingServiceTest` (92%, 80% and 44% on the demo data).
 
+## Demo material photos
+`static/img/materials/` holds the demo listing photos (realistic jpg photos: lumber, plywood, tiles, cement, sand, gravel, steel, roofing, PVC pipe, wire, paint, windows, doors, hollow blocks), which `DataSeeder` assigns. About 26 demo listings across Batangas are seeded.
+With an older `./data`, demo listings without a photo get one on restart.
 
-# FEATURES
-
-- User Account and Role Management – enables users to create accounts, access platforms, and use system functions depending on their roles whether they are providers, requesters, or administrators. 
-- Construction Material Listing – allows material providers to upload details and pictures of their surplus construction supplies by providing information such as measurements, and physical conditions. 
-- Material Request Management – enables users to request for the construction materials by indicating their type, size, quantity, and their desired condition.
-- Compatibility Matching System – automatically checks available construction material and matches the suitable material by evaluating their specifications with the users requirements.
-- Compatibility Score and Explanation – displays a compatibility rating that shows how close each available material matches the user request by showing a percentage score. Provides detailed information of the specific requirements filled or unmet by each recommended material listing.
-- Alternative Material Suggestions – suggests alternative available materials that closely match to the user's requested item when the exact item is unavailable.
-- Material Availability Tracking – maintain accurate status of listed materials by tracking their availability whenever they are reserved, available, or no longer available.
-- Search and Advanced Filtering – allows users to find materials by category, dimensions, condition, quantity, location, and availability.
-- Provider and Requester Communication – allows users to send inquiries and coordinate the collection or transfer of reusable materials.
-- Material Reuse Dashboard – displays statistics such as available listings, active requests, successful matches, and completed material transfers.
-- Material Reuse History and Reports – stores records of the finalized transactions and produces summary reports that shows the kinds and amounts of materials that have been reused.
-- Listing Verification and Reporting – allows administrators to manage reported materials listings, handle unsuitable posts, and supervise overall platform operations.
-- Notification System Sends – notifications to users about material matches, new messages, changes in request statuses, and changes in material availability. 
-
-
-
+## Hero image
+`static/img/hero.jpg` is included. Replace it with your own photo (e.g. a construction site or leftover lumber) if you like.
